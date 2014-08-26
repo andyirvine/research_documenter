@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en" ng-app="researchApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A layout example that shows off a responsive email layout.">
+
+    <title>Session: James Walker</title>
+
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+    <link rel="stylesheet" href="assets/css/layouts/email-client-layout.css">
+    <link rel="stylesheet" href="assets/css/research-documenter.css">
+  
+</head>
+<body ng-controller="messagesCtrl">
+
+
+<div class="header row app-header">
+  <ul class="nav group">
+    <li><a>Projects</a></li>
+    <li><a>Tags</a></li>
+    <li class="search"><input type="search" placeholder="Search" /></li>
+  </ul>  
+</div>
+
+<div class="tabs-wrapper">
+
+  <div class="header row session-header pure-g">
+      <div class="pure-u-1-2">
+          <h1 class="session-header-title"><a href="participant.html">Web Designer Research - Glasgow</a></h1>
+          <p class="email-content-subtitle">
+            Conducted by <a>Andy Irvine</a> for </a> at 6:00pm, July 31, 2014
+          </p>
+      </div>
+    
+      <div class="pure-u-1-2 u-relative">
+        <ul class="nav nav-tabs group">
+          <li><a href="#session-video">Video</a></li>
+          <li><a href="#session-summary">Summary</a></li>
+          <li><a href="#session-tags">Tags</a></li>
+          <li><a href="#session-notes">Notes</a></li>
+          <li><a href="#session-script">Script</a></li>
+        </ul>
+      </div>
+    
+  </div>
+
+
+
+  <div class="left col">
+    <div class="body row scroll-y">
+  
+      <div class="padded-container">
+        <h2>Observations</h2>
+      </div>
+  
+      <div id="messages">
+
+  
+        <div class="observation pure-g {{selected}}" ng-repeat="message in messages | orderBy:'time'" ng-init="editState = 'Edit'">
+          <div class="avatar">
+            <img class="email-avatar" height="54" width="54" src="https://en.gravatar.com/userimage/1239201/03ae0a7fdc66acb5c402644f3781fec2.jpeg">
+          </div>
+          <div class="observation-body">
+            
+            <div class="observation-header group">
+              <div class="observation-timestamp">
+                <button class="button button-play {{selected}}" ng-click="seekTo(message.time); setSelected()" ng-click="">&#9654; Play</button>
+                <span class="timestamp">{{message.time | readableTime}}</span>
+              </div>
+              <div class="observation-actions">
+                <button class="observation-action button-link" ng-click="messages.$remove(message)">Delete</button>
+                <button class="observation-action button-link">Reply</button>
+                <button class="observation-action button-link" ng-click="toggleEdit()">{{editState}}</button>
+              </div>
+
+            </div>
+            
+            <p class="email-desc">
+              <span ng-hide="edit">{{message.text}}</span>
+			  <span ng-show="edit"><textarea class="hidden-input" type="text" ng-model="message.text"></textarea></span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- push a new message into the array -->
+    
+    </div>
+    
+  </div>
+
+  <div class="right col">
+      <div class="body row scroll-y">
+      
+        <div class="padded-container">
+        
+          <div class="content-container" id="session-video">
+     	      <div class="video" ng-controller="vidCtrl">
+     		      <youtube-video id="best-vid" video-id="researchVid" ng-init="time='0'"></youtube-video>
+     	      </div>
+          </div>
+          <!-- end of video -->
+    
+          <div class="content-container" id="session-summary">
+            <h3>Session summary</h3>
+            <div class="textarea">
+            	<p>This session highlighted the fact that people were intimidated by the process of getting up to speed with FreeAgent, even though it's a farily straight forward process. Would be great if we could change the percepetion of this.</p>
+            </div>
+            <button class="button">Save</button>
+          </div>
+     
+          <div class="content-container" id="session-tags">
+            <h3>Session tags</h3>
+            <div class="textarea">
+              <ul class="tags group">
+                <li class="tag"><a href="tag.html">Mobile</a></li>
+                <li class="tag"><a href="tag.html">getting started</a></li>
+                <li class="tag"><a href="tag.html">onboarding</a></li>
+                <li class="tag"><a href="tag.html">accountant</a></li>
+              </ul>
+            </div>
+            <button class="button">Save</button>
+          </div>
+      
+           <div class="content-container" id="session-notes">
+             <h3>Session notes</h3>
+             <div class="textarea">
+               ## James' current workflow for explaining a sale<br />
+               <br />
+               * Click on transaction through to 'Explain a Transaction' view<br />
+               * Change 'Type' dropdown from 'Invoice Receipt' to 'Sales'<br />
+               * Mental check: is this a UK sale or not? What should the VAT value be?<br />
+               * Choose VAT rate from dropdown<br />
+               * Upload payment receipt as attachment<br />
+               * Click 'Create New Explanation'<br />
+               * Navigate back to bank account show
+               </ol>
+             </div>
+              <button class="button">Save</button>
+           </div>
+       
+           <div class="content-container" id="session-script">
+             <p><a target="_blank" href="https://docs.google.com/a/freeagent.com/document/d/1V3VPmUmU9IFmjINzbNbd8UFJ5u-kjhiuPiS2Jz8zG3s/edit">Available on Google Docs</a></p>
+           </div>
+        
+        </div>
+
+      </div>
+  
+      <div class="footer row">
+        <div class="add-observation-content">
+          <!-- <label for="observation-input">Add observation at 00:00</label> -->
+          <form ng-submit="addMessage(newMessageText)">
+            <textarea id="observation-input" rows="3" placeholder="Observation description" ng-model="newMessageText" /></textarea>
+            <button type="submit" class="observation-submit">Add observation</button>
+          </form>
+        </div>
+      </div>
+      
+  </div>
+  
+</div>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
+    <script src="https://cdn.firebase.com/js/client/1.0.18/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.min.js"></script>
+	<script src="https://cdn.firebase.com/js/simple-login/1.6.3/firebase-simple-login.js"></script>
+	<script src="assets/scripts/angular-youtube-embed.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/scripts/angular-readable-time.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/scripts/app.js"></script>
+  
+	<script src="assets/scripts/application.js"></script>
+	
+</body>
+</html>
